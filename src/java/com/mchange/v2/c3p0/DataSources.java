@@ -324,7 +324,14 @@ public final class DataSources
 		String propKey = (String) e.nextElement();
 		String propVal = props.getProperty( propKey );
 		String peeledKey = (propKey.startsWith("c3p0.") ? propKey.substring(5) : propKey );
-		peeledProps.put( peeledKey, propVal );
+		if (propVal != null) 
+		{
+			// Avoid NPE on peeledKey			
+			peeledProps.put(peeledKey, propVal);
+		}
+		else 
+		{
+			// System.err.println("c3p0 skipped property " + peeledKey+ "/"+propKey+" - resolved to NULL!");		}		
 	    }
 	return pooledDataSource( unpooledDataSource, null, peeledProps );
     }
